@@ -21,22 +21,22 @@ void tampilkanDaftarBuku (Buku daftarBuku[], int jumlahBuku);
 void cariBuku            (Buku daftarBuku[], int jumlahBuku);
 void urutkanBuku	     (Buku daftarBuku[], int jumlahBuku);
 
-void bacaDataBukuDariFile(Buku daftarBuku[], int &jumlahBuku) {
+void bacaDataBukuDariFile(Buku daftarBuku[], int *jumlahBuku) {
     ifstream file(NAMA_FILE);
     if (!file.is_open()) {
-        jumlahBuku = 0;
+        *jumlahBuku = 0;
         return;
     }
 
-    jumlahBuku = 0;
+    *jumlahBuku = 0;
     string tahunStr;
-    while (jumlahBuku < MAX_BUKU &&
-           getline(file, daftarBuku[jumlahBuku].judulBuku)   &&
-           getline(file, daftarBuku[jumlahBuku].namaPenulis)  &&
-           getline(file, daftarBuku[jumlahBuku].namaPenerbit) &&
+    while (*jumlahBuku < MAX_BUKU &&
+           getline(file, daftarBuku[*jumlahBuku].judulBuku)   &&
+           getline(file, daftarBuku[*jumlahBuku].namaPenulis)  &&
+           getline(file, daftarBuku[*jumlahBuku].namaPenerbit) &&
            getline(file, tahunStr)) {
-        daftarBuku[jumlahBuku].tahunTerbit = stoi(tahunStr);
-        jumlahBuku++;
+        daftarBuku[*jumlahBuku].tahunTerbit = stoi(tahunStr);
+        (*jumlahBuku)++;
     }
 
     file.close();
@@ -59,13 +59,13 @@ void simpanDataBukuKeFile(Buku daftarBuku[], int jumlahBuku) {
     file.close();
 }
 
-void tambahBuku(Buku daftarBuku[], int &jumlahBuku) {
+void tambahBuku(Buku daftarBuku[], int *jumlahBuku) {
     system("cls");
     cout << "=======================================================" << endl;
     cout << "                    TAMBAH BUKU BARU                   " << endl;
     cout << "=======================================================" << endl;
 
-    if (jumlahBuku >= MAX_BUKU) {
+    if (*jumlahBuku >= MAX_BUKU) {
         cout << "Tidak dapat menambah buku baru" << endl;
         cout << "Press any key to continue...";
         cin.get();
@@ -80,10 +80,10 @@ void tambahBuku(Buku daftarBuku[], int &jumlahBuku) {
     cout << "Tahun Terbit  : "; cin  >> bukuBaru.tahunTerbit;
     cin.ignore();
 
-    daftarBuku[jumlahBuku] = bukuBaru;
-    jumlahBuku++;
+    daftarBuku[*jumlahBuku] = bukuBaru;
+    (*jumlahBuku)++;
 
-    simpanDataBukuKeFile(daftarBuku, jumlahBuku);
+    simpanDataBukuKeFile(daftarBuku, *jumlahBuku);
 
     cout << "Buku berhasil ditambahkan" << endl;
     cout << "Press any key to continue...";
@@ -191,7 +191,7 @@ int main() {
     Buku daftarBuku[MAX_BUKU];
     int  jumlahBukuSekarang = 0;
 
-    bacaDataBukuDariFile(daftarBuku, jumlahBukuSekarang);
+    bacaDataBukuDariFile(daftarBuku, &jumlahBukuSekarang);
 
     // Welcome Screen
     cout << "=======================================================" << endl;
@@ -218,7 +218,7 @@ int main() {
         system("cls");
         switch (pilihan) {
             case 1:
-                tambahBuku(daftarBuku, jumlahBukuSekarang);
+                tambahBuku(daftarBuku, &jumlahBukuSekarang);
                 break;
             case 2:
                 tampilkanDaftarBuku(daftarBuku, jumlahBukuSekarang);
