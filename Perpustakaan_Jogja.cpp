@@ -3,6 +3,7 @@
 #include <string>
 using namespace std;
 
+// menyimpan data buku dalam satu kesatuan
 struct Buku {
     
     string judulBuku;
@@ -14,6 +15,7 @@ struct Buku {
 const int    MAX_BUKU  = 30;
 const string NAMA_FILE = "arsipPerpustakaan.txt";
 
+//deklarasi fungsi
 void bacaDataBukuDariFile(Buku daftarBuku[], int &jumlahBuku);
 void simpanDataBukuKeFile(Buku daftarBuku[], int jumlahBuku);
 void tambahBuku          (Buku daftarBuku[], int &jumlahBuku);
@@ -36,7 +38,7 @@ void bacaDataBukuDariFile(Buku daftarBuku[], int *jumlahBuku) {
            getline(file, daftarBuku[*jumlahBuku].namaPenerbit) &&
            getline(file, tahunStr)) {
         daftarBuku[*jumlahBuku].tahunTerbit = stoi(tahunStr);
-        (*jumlahBuku)++;
+        (*jumlahBuku)++; //ubah string ke int
     }
 
     file.close();
@@ -80,7 +82,7 @@ void tambahBuku(Buku daftarBuku[], int *jumlahBuku) {
     cout << "Tahun Terbit  : "; cin  >> bukuBaru.tahunTerbit;
     cin.ignore();
 
-    daftarBuku[*jumlahBuku] = bukuBaru;
+    daftarBuku[*jumlahBuku] = bukuBaru; 
     (*jumlahBuku)++;
 
     simpanDataBukuKeFile(daftarBuku, *jumlahBuku);
@@ -106,6 +108,7 @@ void tampilkanDaftarBuku(Buku daftarBuku[], int jumlahBuku) {
             cout << "Nama Penulis  : " << daftarBuku[i].namaPenulis  << endl;
             cout << "Nama Penerbit : " << daftarBuku[i].namaPenerbit << endl;
             cout << "Tahun Terbit  : " << daftarBuku[i].tahunTerbit  << endl;
+            cout << endl;
         }
         cout << "=======================================================" << endl;
         cout << "  Total buku: " << jumlahBuku << endl;
@@ -132,8 +135,9 @@ void cariBuku(Buku daftarBuku[], int jumlahBuku) {
     string kataCari;
     getline(cin, kataCari);
 
+    // konverensi kata ke huruf kecil
     string kataCariLower = kataCari;
-    for (char &c : kataCariLower) c = tolower(c);
+    for (char &c : kataCariLower) c = tolower(c); // ubah karakter ke lowercase
 
     cout << "Hasil pencarian untuk " << kataCari << " : ";
     cout << "-------------------------------------------------------" << endl;
@@ -144,13 +148,14 @@ void cariBuku(Buku daftarBuku[], int jumlahBuku) {
         for (char &c : judulLower) c = tolower(c);
 
         if (judulLower.find(kataCariLower) != string::npos) {
+			cout << endl;
             cout << "Buku ke-" << (i + 1) << endl;
             cout << "Judul Buku    : " << daftarBuku[i].judulBuku   << endl;
             cout << "Nama Penulis  : " << daftarBuku[i].namaPenulis  << endl;
             cout << "Nama Penerbit : " << daftarBuku[i].namaPenerbit << endl;
             cout << "Tahun Terbit  : " << daftarBuku[i].tahunTerbit  << endl;
             jumlahDitemukan++;
-        }
+        }cout << endl;
     }
 
     if (jumlahDitemukan == 0) {
@@ -168,7 +173,7 @@ void urutkanBuku(Buku daftarBuku[], int jumlahBuku){
     if (jumlahBuku <= 1) return;
 
     for (int i = 0; i < jumlahBuku - 1; i++) {
-        for (int j = 0; j < jumlahBuku - i - 1; j++) {
+        for (int j = 0; j < jumlahBuku - i - 1; j++) { //bandingkan elemen berdekat
             
             if (daftarBuku[j].judulBuku > daftarBuku[j + 1].judulBuku) {
                 
